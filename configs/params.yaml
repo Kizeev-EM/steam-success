@@ -1,0 +1,76 @@
+# Параметры проекта steam-success. Все стадии dvc.yaml читают значения отсюда.
+
+seed: 42
+
+data:
+  raw: data/raw/steam.csv
+  dump_date: "2019-05-01"          # дата выгрузки набора
+
+split:
+  # Исходная часть: всё, что вышло до конца апреля 2017 года (совпадает с
+  # обучающей частью из ПР 1). Порции — кварталы тестового года.
+  initial_end: "2017-04-30"
+  label_cutoff: "2018-04-30"       # позже метка не успела созреть
+  batches:
+    - {name: batch_01, start: "2017-05-01", end: "2017-07-31"}
+    - {name: batch_02, start: "2017-08-01", end: "2017-10-31"}
+    - {name: batch_03, start: "2017-11-01", end: "2018-01-31"}
+    - {name: batch_04, start: "2018-02-01", end: "2018-04-30"}
+  card_fields: [appid, name, release_date, english, developer, publisher,
+                platforms, required_age, categories, genres, achievements, price]
+  label_fields: [appid, owners, positive_ratings, negative_ratings,
+                 average_playtime, median_playtime, steamspy_tags]
+
+target:
+  threshold: 50000                 # игра успешна, если нижняя граница owners >= порога
+  maturation_months: 12
+
+quality:
+  allowed_ages: [0, 3, 7, 12, 16, 18]
+  allowed_platforms: [windows, mac, linux]
+  price_review: 100                # цена выше — ручная проверка
+  max_missing_share: 0.01          # К9
+  max_new_publisher_share: 0.80    # К12
+  max_success_ratio: 2.0           # К13
+  software_genres: [Utilities, Design & Illustration, Video Production,
+                    Software Training, Animation & Modeling, Audio Production,
+                    Photo Editing, Web Publishing, Education, Accounting,
+                    Game Development]
+
+features:
+  min_count: 50                    # жанры и категории реже — в «прочие»
+  history_gap_months: 12           # зазор для истории издателя и разработчика
+  ach_cap: 100
+  drop_categories: [Steam Trading Cards]   # утечка, ПР 2, п. 1.6
+  online_categories: [Multi-player, Co-op, Online Co-op]
+
+cv:
+  # Расширяющееся окно: проверка на 6 месяцах, обучение на всём, что вышло
+  # не позже чем за gap_months до начала проверки (метка созревает год).
+  n_folds: 5
+  fold_months: 6
+  gap_months: 12
+  last_fold_end: "2017-04-30"
+  top_k: 20                        # слотов в недельном списке
+  selection_tolerance: 0.005       # разница PR-AUC, ниже которой берём модель проще
+
+models:
+  logreg_C_grid: [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0]
+  knn_k: 25
+  tree_depths: [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20]
+  rf_trees: 300
+  tune:
+    lgbm:
+      learning_rate: [0.02, 0.05, 0.1]
+      num_leaves: [7, 15, 31]
+      min_child_samples: [20, 50, 100]
+      n_estimators: [200, 400]
+      recency_half_life_years: [null, 3]
+    logreg:
+      C: [0.03, 0.1, 0.3, 1.0, 3.0]
+      class_weight: [null, balanced]
+
+mlflow:
+  tracking_uri: sqlite:///mlflow.db
+  experiment: steam-success-pr3
+  registered_model: steam-success

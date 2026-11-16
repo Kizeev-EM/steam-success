@@ -1,0 +1,5 @@
+outs:
+- md5: 61db6ef6b06166d0c100ee78b2a5244a
+  size: 5787977
+  hash: md5
+  path: steam.csv

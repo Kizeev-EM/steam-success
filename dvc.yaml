@@ -1,0 +1,49 @@
+stages:
+  split:
+    cmd: python -m steam_success.data.split
+    deps:
+      - src/steam_success/data/split.py
+      - data/raw/steam.csv
+    params:
+      - configs/params.yaml:
+          - split
+    outs:
+      - data/interim/initial.csv
+      - data/incoming
+  validate:
+    cmd: python -m steam_success.data.validate
+    deps:
+      - src/steam_success/data/validate.py
+      - src/steam_success/data/schema.py
+      - src/steam_success/data/io.py
+      - src/steam_success/features/history.py
+      - data/interim/initial.csv
+      - data/incoming
+    params:
+      - configs/params.yaml:
+          - quality
+          - target
+          - features.history_gap_months
+    metrics:
+      - reports/quality.json:
+          cache: false
+  eda:
+    cmd: python -m steam_success.eda.run_eda
+    deps:
+      - src/steam_success/eda/run_eda.py
+      - src/steam_success/features/history.py
+      - data/interim/initial.csv
+    params:
+      - configs/params.yaml:
+          - quality.software_genres
+          - target
+          - features.history_gap_months
+    outs:
+      - reports/eda_summary.json:
+          cache: false
+      - reports/figures/eda_success_by_period.png:
+          cache: false
+      - reports/figures/eda_success_by_group.png:
+          cache: false
+      - reports/figures/eda_spearman.png:
+          cache: false

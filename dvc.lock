@@ -1,0 +1,179 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python -m steam_success.data.split
+    deps:
+    - path: data/raw/steam.csv
+      hash: md5
+      md5: 61db6ef6b06166d0c100ee78b2a5244a
+      size: 5787977
+    - path: src/steam_success/data/split.py
+      hash: md5
+      md5: 864d037a7d4e187363cc49d205c3a21f
+      size: 2375
+    params:
+      configs/params.yaml:
+        split:
+          initial_end: '2017-04-30'
+          label_cutoff: '2018-04-30'
+          batches:
+          - name: batch_01
+            start: '2017-05-01'
+            end: '2017-07-31'
+          - name: batch_02
+            start: '2017-08-01'
+            end: '2017-10-31'
+          - name: batch_03
+            start: '2017-11-01'
+            end: '2018-01-31'
+          - name: batch_04
+            start: '2018-02-01'
+            end: '2018-04-30'
+          card_fields:
+          - appid
+          - name
+          - release_date
+          - english
+          - developer
+          - publisher
+          - platforms
+          - required_age
+          - categories
+          - genres
+          - achievements
+          - price
+          label_fields:
+          - appid
+          - owners
+          - positive_ratings
+          - negative_ratings
+          - average_playtime
+          - median_playtime
+          - steamspy_tags
+    outs:
+    - path: data/incoming
+      hash: md5
+      md5: 1893de9c2da6fdf5cc1e97ba2feeaabb.dir
+      size: 1593278
+      nfiles: 8
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+  validate:
+    cmd: python -m steam_success.data.validate
+    deps:
+    - path: data/incoming
+      hash: md5
+      md5: 1893de9c2da6fdf5cc1e97ba2feeaabb.dir
+      size: 1593278
+      nfiles: 8
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: src/steam_success/data/io.py
+      hash: md5
+      md5: 272aedcdd808129243d42065e560ee51
+      size: 1457
+    - path: src/steam_success/data/schema.py
+      hash: md5
+      md5: 5ce46db90f136ee781b6ff0145523ef5
+      size: 1605
+    - path: src/steam_success/data/validate.py
+      hash: md5
+      md5: 31691bbc7e05262cdd8931cb5d5bf4d1
+      size: 8526
+    - path: src/steam_success/features/history.py
+      hash: md5
+      md5: d74aa9f47228284906edf0d7d63dab1c
+      size: 1940
+    params:
+      configs/params.yaml:
+        features.history_gap_months: 12
+        quality:
+          allowed_ages:
+          - 0
+          - 3
+          - 7
+          - 12
+          - 16
+          - 18
+          allowed_platforms:
+          - windows
+          - mac
+          - linux
+          price_review: 100
+          max_missing_share: 0.01
+          max_new_publisher_share: 0.8
+          max_success_ratio: 2.0
+          software_genres:
+          - Utilities
+          - Design & Illustration
+          - Video Production
+          - Software Training
+          - Animation & Modeling
+          - Audio Production
+          - Photo Editing
+          - Web Publishing
+          - Education
+          - Accounting
+          - Game Development
+        target:
+          threshold: 50000
+          maturation_months: 12
+    outs:
+    - path: reports/quality.json
+      hash: md5
+      md5: 8ca9bfd164b28a81aa8c5eff15cf3237
+      size: 2552
+  eda:
+    cmd: python -m steam_success.eda.run_eda
+    deps:
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: src/steam_success/eda/run_eda.py
+      hash: md5
+      md5: 74e4129e1fb60702f5a5fcae79f0789a
+      size: 14043
+    - path: src/steam_success/features/history.py
+      hash: md5
+      md5: d74aa9f47228284906edf0d7d63dab1c
+      size: 1940
+    params:
+      configs/params.yaml:
+        features.history_gap_months: 12
+        quality.software_genres:
+        - Utilities
+        - Design & Illustration
+        - Video Production
+        - Software Training
+        - Animation & Modeling
+        - Audio Production
+        - Photo Editing
+        - Web Publishing
+        - Education
+        - Accounting
+        - Game Development
+        target:
+          threshold: 50000
+          maturation_months: 12
+    outs:
+    - path: reports/eda_summary.json
+      hash: md5
+      md5: a4c71c86f2ed16d7696b6f316dc5fded
+      size: 2985
+    - path: reports/figures/eda_spearman.png
+      hash: md5
+      md5: f7737adc4cfff3e482f7c6c94f14b813
+      size: 365372
+    - path: reports/figures/eda_success_by_group.png
+      hash: md5
+      md5: 83436b633ee01e25dbe198921bee351b
+      size: 96503
+    - path: reports/figures/eda_success_by_period.png
+      hash: md5
+      md5: 0ef1fd17a0a548f33e584714c7ddc1c8
+      size: 120649

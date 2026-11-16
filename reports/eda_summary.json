@@ -1,0 +1,180 @@
+{
+ "records": 12013,
+ "model_rows": 10942,
+ "success": 3713,
+ "success_share": 0.3393,
+ "date_min": "1997-06-30",
+ "date_max": "2017-04-30",
+ "share_2014_2017": 0.8475,
+ "n_publishers": 5556,
+ "publishers_one_game": 0.7779,
+ "self_published": 0.5719,
+ "median_genres": 2.0,
+ "median_categories": 3.0,
+ "age_restricted": 0.0324,
+ "median_price_paid": 5.19,
+ "no_achievements": 0.4131,
+ "owners_0_20k": 0.4873,
+ "owners_20_50k": 0.1748,
+ "free_games": 983,
+ "free_success_share": 0.6602,
+ "success_by_year": {
+  "<=2012": 0.7172,
+  "2013": 0.8229,
+  "2014": 0.4523,
+  "2015": 0.2773,
+  "2016": 0.2172,
+  "2017": 0.1867
+ },
+ "success_2017_jan_apr": 0.1867,
+ "price_iqr_outliers": 0.0578,
+ "ach_iqr_outliers": 0.0481,
+ "price_skew": 3.64,
+ "ach_skew": 46.5,
+ "ach_over_100": 185,
+ "ach_over_1000": 13,
+ "ach_max": 9821,
+ "cards_records": 5657,
+ "no_english": 50,
+ "median_price": [
+  6.99,
+  4.99
+ ],
+ "median_ach": [
+  14.0,
+  8.0
+ ],
+ "mw_price_p": 1.4967238283879286e-46,
+ "success_by_price_group": {
+  "до 0,99": 0.4535,
+  "1–4,99": 0.2558,
+  "5–9,99": 0.3296,
+  "10–19,99": 0.4777,
+  "20+": 0.5488
+ },
+ "success_by_history": {
+  "hit": 0.5272,
+  "misses": 0.0673,
+  "none": 0.2894
+ },
+ "share_no_history": 0.6717,
+ "success_by_genre": {
+  "Action": 0.3772,
+  "Adventure": 0.3402,
+  "Casual": 0.2585,
+  "Indie": 0.3051,
+  "RPG": 0.4036,
+  "Simulation": 0.2909,
+  "Strategy": 0.3661,
+  "Early Access": 0.1371
+ },
+ "vr_games": 157,
+ "vr_success": 0.2166,
+ "success_by_category": {
+  "Multi-player": 0.4846,
+  "Co-op": 0.5087,
+  "Online Co-op": 0.4351,
+  "Steam Workshop": 0.5519
+ },
+ "spearman_with_y": {
+  "year": -0.35,
+  "price": 0.14,
+  "achievements": 0.15,
+  "has_ach": 0.09,
+  "n_genres": -0.08,
+  "n_categories": 0.16,
+  "pub_n_prev": 0.16,
+  "pub_had_hit": 0.24,
+  "cards": 0.16,
+  "early_access": -0.12,
+  "online": 0.14,
+  "mac": 0.07,
+  "linux": 0.07,
+  "vr": -0.03
+ },
+ "spearman_pairs": {
+  "pub_n_prev~pub_had_hit": 0.87,
+  "achievements~has_ach": 0.84,
+  "mac~linux": 0.66
+ },
+ "hypotheses": {
+  "G1_cards": {
+   "or": 4.454,
+   "ci": [
+    4.001,
+    4.958
+   ],
+   "p": 4.955384113808646e-164
+  },
+  "G1_shares": [
+   0.4142,
+   0.2592
+  ],
+  "G2_hit": {
+   "or": 2.499,
+   "ci": [
+    2.27,
+    2.751
+   ]
+  },
+  "G2_misses": {
+   "or": 0.196,
+   "ci": [
+    0.143,
+    0.27
+   ]
+  },
+  "G3_year_or_vs_le2012": {
+   "2013": [
+    1.83,
+    1.25
+   ],
+   "2014": [
+    0.33,
+    0.24
+   ],
+   "2015": [
+    0.15,
+    0.1
+   ],
+   "2016": [
+    0.11,
+    0.07
+   ],
+   "2017": [
+    0.09,
+    0.06
+   ]
+  },
+  "G4_early_access": {
+   "or": 0.455,
+   "ci": [
+    0.367,
+    0.565
+   ],
+   "p": 7.127622826492115e-13
+  },
+  "G5_cheap": {
+   "or": 3.114,
+   "ci": [
+    2.67,
+    3.632
+   ],
+   "p": 2.2616407148924655e-47
+  },
+  "G5_cheap_shares": [
+   0.4535,
+   0.3304
+  ],
+  "G5_cheap_no_cards": {
+   "or": 1.136,
+   "ci": [
+    0.75,
+    1.72
+   ],
+   "p": 0.5469825469954962
+  },
+  "G5_cheap_with_cards_share": 0.5882,
+  "G5_cheap_no_cards_share": 0.1319
+ }
+}
