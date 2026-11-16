@@ -1,0 +1,22 @@
+# Окружение и кеши
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Данные и модели хранит DVC
+/data/raw/steam.csv
+/data/interim
+/data/incoming
+/data/processed
+/models/*.joblib
+
+# Замеры времени: меняются при каждом запуске
+/reports/timing.json
+
+# Локальное хранилище MLflow
+/mlflow.db
+/mlartifacts/
+/mlruns/
