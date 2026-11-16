@@ -47,3 +47,107 @@ stages:
           cache: false
       - reports/figures/eda_spearman.png:
           cache: false
+  features:
+    cmd: python -m steam_success.features.build
+    deps:
+      - src/steam_success/features
+      - src/steam_success/data/validate.py
+      - data/interim/initial.csv
+      - data/incoming
+    params:
+      - configs/params.yaml:
+          - features
+          - quality
+          - target
+    outs:
+      - data/processed
+    metrics:
+      - reports/features_check.json:
+          cache: false
+  experiments:
+    cmd: python -m steam_success.models.experiments
+    deps:
+      - src/steam_success/features
+      - src/steam_success/models/cv.py
+      - src/steam_success/models/zoo.py
+      - src/steam_success/models/experiments.py
+      - data/interim/initial.csv
+    params:
+      - configs/params.yaml:
+          - seed
+          - features
+          - cv
+          - models.logreg_C_grid
+          - models.knn_k
+          - models.tree_depths
+          - models.rf_trees
+    outs:
+      - reports/experiments.csv:
+          cache: false
+      - reports/experiments_folds.csv:
+          cache: false
+      - reports/cv_folds.json:
+          cache: false
+      - reports/reg_path.csv:
+          cache: false
+      - reports/tree_depth.csv:
+          cache: false
+      - reports/logreg_coefs.csv:
+          cache: false
+      - reports/figures/reg_path.png:
+          cache: false
+      - reports/figures/tree_depth.png:
+          cache: false
+  tune:
+    cmd: python -m steam_success.models.tune
+    deps:
+      - src/steam_success/features
+      - src/steam_success/models/cv.py
+      - src/steam_success/models/zoo.py
+      - src/steam_success/models/tune.py
+      - data/interim/initial.csv
+    params:
+      - configs/params.yaml:
+          - seed
+          - features
+          - cv
+          - models.rf_trees
+          - models.tune
+    outs:
+      - reports/tuning_lightgbm.csv:
+          cache: false
+      - reports/tuning_random_forest.csv:
+          cache: false
+      - reports/tuning_logreg.csv:
+          cache: false
+      - reports/best_params.json:
+          cache: false
+  train:
+    cmd: python -m steam_success.models.train
+    deps:
+      - src/steam_success/features
+      - src/steam_success/models
+      - data/interim/initial.csv
+      - reports/experiments.csv
+      - reports/best_params.json
+      - reports/tuning_lightgbm.csv
+      - reports/tuning_random_forest.csv
+      - reports/tuning_logreg.csv
+    params:
+      - configs/params.yaml:
+          - seed
+          - features
+          - cv
+          - target
+    outs:
+      - models/model_v1.joblib
+      - models/model_v1.json:
+          cache: false
+      - reports/summary.csv:
+          cache: false
+      - reports/shap_importance.csv:
+          cache: false
+      - reports/figures/models_comparison.png:
+          cache: false
+      - reports/figures/shap_importance.png:
+          cache: false

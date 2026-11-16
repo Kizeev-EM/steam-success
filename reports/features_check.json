@@ -1,0 +1,37 @@
+{
+ "initial": {
+  "rows": 10942,
+  "columns": 58,
+  "duplicates_in_catalog": 0,
+  "md5": "94de44d53514499d8d6d4c87bd0bc568",
+  "second_run_identical": true
+ },
+ "batch_01": {
+  "rows": 1248,
+  "columns": 57,
+  "duplicates_in_catalog": 0,
+  "md5": "6999999f1b7337f0f30ac0a13161b382",
+  "second_run_identical": true
+ },
+ "batch_02": {
+  "rows": 1841,
+  "columns": 57,
+  "duplicates_in_catalog": 1,
+  "md5": "5a50de665ffcd12add22b6cd6808fc7d",
+  "second_run_identical": true
+ },
+ "batch_03": {
+  "rows": 1617,
+  "columns": 57,
+  "duplicates_in_catalog": 0,
+  "md5": "a6d8f6e8ea164f70477f228932d5a6e5",
+  "second_run_identical": true
+ },
+ "batch_04": {
+  "rows": 1937,
+  "columns": 57,
+  "duplicates_in_catalog": 0,
+  "md5": "bf740c6716215747d279a019381d8d76",
+  "second_run_identical": true
+ }
+}

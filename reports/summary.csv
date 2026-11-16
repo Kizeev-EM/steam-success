@@ -1,0 +1,18 @@
+experiment,family,feature_set,params,pr_auc_mean,pr_auc_lift_mean,roc_auc_mean,precision_at_20w_mean,recall_at_20w_mean,pr_auc_std
+Константа (доля успешных),baseline,full,score = 0,0.2518,1.0000,0.5000,0.2761,0.3858,0.0545
+Правило: у издателя был успешный релиз,baseline,full,score = pub_had_hit,0.3180,1.2860,0.6067,0.3540,0.4933,0.0441
+"Логистическая регрессия L2 (C = 0,001)",logreg,full,"l2, C=0.001",0.4461,1.7856,0.6590,0.3607,0.5085,0.0820
+"Логистическая регрессия L1 (C = 0,03)",logreg,full,"l1, C=0.03",0.4320,1.7419,0.6582,0.3674,0.5181,0.0642
+k ближайших соседей (k = 25),knn,full,k=25,0.3826,1.5368,0.6499,0.3524,0.4959,0.0667
+Наивный байесовский (гауссовский),naive_bayes,full,GaussianNB,0.3507,1.4025,0.6352,0.3385,0.4776,0.0655
+Дерево решений (глубина 4),tree,full,max_depth=4,0.3561,1.4479,0.6136,0.3445,0.4848,0.0416
+Дерево решений без ограничения глубины,tree,full,max_depth=None,0.2710,1.0816,0.5460,0.2961,0.4155,0.0544
+Случайный лес (300 деревьев),random_forest,full,"n_estimators=300, min_samples_leaf=5",0.4588,1.8596,0.6767,0.3778,0.5326,0.0581
+Градиентный бустинг LightGBM (по умолчанию),lightgbm,full,defaults,0.4438,1.7990,0.6753,0.3705,0.5212,0.0577
+"Логистическая регрессия L2 (C = 0,001), базовые признаки",logreg,base,base features,0.4007,1.5976,0.6204,0.3420,0.4824,0.0836
+"Логистическая регрессия L2 (C = 0,001), новые признаки без истории издателя",logreg,full_no_history,full features without publisher/developer history,0.4019,1.5955,0.6174,0.3427,0.4833,0.0887
+"Градиентный бустинг LightGBM (по умолчанию), базовые признаки",lightgbm,base,base features,0.4089,1.6369,0.6443,0.3442,0.4848,0.0817
+"Градиентный бустинг LightGBM (по умолчанию), новые признаки без истории издателя",lightgbm,full_no_history,full features without publisher/developer history,0.4081,1.6407,0.6430,0.3439,0.4843,0.0736
+Градиентный бустинг LightGBM (после подбора),lightgbm,full,"{""learning_rate"": 0.02, ""num_leaves"": 3, ""min_child_samples"": 20, ""n_estimators"": 400, ""recency_half_life_years"": 3}",0.4676,1.8870,0.6761,0.3690,0.5201,0.0678
+Случайный лес (после подбора),random_forest,full,"{""min_samples_leaf"": 20, ""max_features"": ""sqrt"", ""recency_half_life_years"": 3}",0.4678,1.8935,0.6810,0.3820,0.5389,0.0639
+Логистическая регрессия L2 (после подбора),logreg,full,"{""C"": 0.001, ""class_weight"": ""balanced"", ""recency_half_life_years"": null}",0.4461,1.7856,0.6590,0.3607,0.5085,0.0820

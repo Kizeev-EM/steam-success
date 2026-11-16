@@ -177,3 +177,372 @@ stages:
       hash: md5
       md5: 0ef1fd17a0a548f33e584714c7ddc1c8
       size: 120649
+  features:
+    cmd: python -m steam_success.features.build
+    deps:
+    - path: data/incoming
+      hash: md5
+      md5: 1893de9c2da6fdf5cc1e97ba2feeaabb.dir
+      size: 1593278
+      nfiles: 8
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: src/steam_success/data/validate.py
+      hash: md5
+      md5: 31691bbc7e05262cdd8931cb5d5bf4d1
+      size: 8526
+    - path: src/steam_success/features
+      hash: md5
+      md5: 9a97e2e87e4ae69935c7accc6a115029.dir
+      size: 14761
+      nfiles: 3
+    params:
+      configs/params.yaml:
+        features:
+          min_count: 50
+          history_gap_months: 12
+          ach_cap: 100
+          drop_categories:
+          - Steam Trading Cards
+          online_categories:
+          - Multi-player
+          - Co-op
+          - Online Co-op
+        quality:
+          allowed_ages:
+          - 0
+          - 3
+          - 7
+          - 12
+          - 16
+          - 18
+          allowed_platforms:
+          - windows
+          - mac
+          - linux
+          price_review: 100
+          max_missing_share: 0.01
+          max_new_publisher_share: 0.8
+          max_success_ratio: 2.0
+          software_genres:
+          - Utilities
+          - Design & Illustration
+          - Video Production
+          - Software Training
+          - Animation & Modeling
+          - Audio Production
+          - Photo Editing
+          - Web Publishing
+          - Education
+          - Accounting
+          - Game Development
+        target:
+          threshold: 50000
+          maturation_months: 12
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: e8f6e4faa48e0f2851c60b31b60b0376.dir
+      size: 474759
+      nfiles: 6
+    - path: reports/features_check.json
+      hash: md5
+      md5: ff52a435787753f8f0fef766b295bf22
+      size: 792
+  experiments:
+    cmd: python -m steam_success.models.experiments
+    deps:
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: src/steam_success/features
+      hash: md5
+      md5: 9a97e2e87e4ae69935c7accc6a115029.dir
+      size: 14761
+      nfiles: 3
+    - path: src/steam_success/models/cv.py
+      hash: md5
+      md5: 255ecd3beb95288c50aa56a172bf426d
+      size: 4794
+    - path: src/steam_success/models/experiments.py
+      hash: md5
+      md5: 48a4f26c4f339919de65e82848da86f9
+      size: 10878
+    - path: src/steam_success/models/zoo.py
+      hash: md5
+      md5: b43aa633c86e538d66d6ae40d1ca5b57
+      size: 2451
+    params:
+      configs/params.yaml:
+        cv:
+          n_folds: 5
+          fold_months: 6
+          gap_months: 12
+          last_fold_end: '2017-04-30'
+          top_k: 20
+          selection_tolerance: 0.005
+        features:
+          min_count: 50
+          history_gap_months: 12
+          ach_cap: 100
+          drop_categories:
+          - Steam Trading Cards
+          online_categories:
+          - Multi-player
+          - Co-op
+          - Online Co-op
+        models.knn_k: 25
+        models.logreg_C_grid:
+        - 0.0001
+        - 0.0003
+        - 0.001
+        - 0.003
+        - 0.01
+        - 0.03
+        - 0.1
+        - 0.3
+        - 1.0
+        - 3.0
+        - 10.0
+        models.rf_trees: 300
+        models.tree_depths:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 10
+        - 12
+        - 15
+        - 20
+        seed: 42
+    outs:
+    - path: reports/cv_folds.json
+      hash: md5
+      md5: c0f7cd7e2480aab2df77a8f533a96d67
+      size: 919
+    - path: reports/experiments.csv
+      hash: md5
+      md5: ff1625c2611b957b6a51f0bd4a8146f4
+      size: 2271
+    - path: reports/experiments_folds.csv
+      hash: md5
+      md5: 8b4a09469989ad3669ca6822dafeb73f
+      size: 9219
+    - path: reports/figures/reg_path.png
+      hash: md5
+      md5: 7c671cedc9990ea6335ecdf4aa3ac3d5
+      size: 123721
+    - path: reports/figures/tree_depth.png
+      hash: md5
+      md5: 781b1e294105e5d3f31b8c943dacbe3a
+      size: 85623
+    - path: reports/logreg_coefs.csv
+      hash: md5
+      md5: 563b09a870ee53ba57b4a3fb2c60023b
+      size: 2036
+    - path: reports/reg_path.csv
+      hash: md5
+      md5: df7988b1c1b7cc54d3d222a296dbce3c
+      size: 1228
+    - path: reports/tree_depth.csv
+      hash: md5
+      md5: 57bbace481653903f8ac6e16c2a200fb
+      size: 584
+  tune:
+    cmd: python -m steam_success.models.tune
+    deps:
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: src/steam_success/features
+      hash: md5
+      md5: 9a97e2e87e4ae69935c7accc6a115029.dir
+      size: 14761
+      nfiles: 3
+    - path: src/steam_success/models/cv.py
+      hash: md5
+      md5: 255ecd3beb95288c50aa56a172bf426d
+      size: 4794
+    - path: src/steam_success/models/tune.py
+      hash: md5
+      md5: 131ff30a30ed892b71bf2779c4ad870d
+      size: 4121
+    - path: src/steam_success/models/zoo.py
+      hash: md5
+      md5: b43aa633c86e538d66d6ae40d1ca5b57
+      size: 2451
+    params:
+      configs/params.yaml:
+        cv:
+          n_folds: 5
+          fold_months: 6
+          gap_months: 12
+          last_fold_end: '2017-04-30'
+          top_k: 20
+          selection_tolerance: 0.005
+        features:
+          min_count: 50
+          history_gap_months: 12
+          ach_cap: 100
+          drop_categories:
+          - Steam Trading Cards
+          online_categories:
+          - Multi-player
+          - Co-op
+          - Online Co-op
+        models.rf_trees: 300
+        models.tune:
+          lightgbm:
+            learning_rate:
+            - 0.01
+            - 0.02
+            - 0.05
+            num_leaves:
+            - 3
+            - 7
+            - 15
+            min_child_samples:
+            - 20
+            - 50
+            - 100
+            n_estimators:
+            - 200
+            - 400
+            recency_half_life_years:
+            - 
+            - 3
+          random_forest:
+            min_samples_leaf:
+            - 1
+            - 5
+            - 20
+            - 50
+            max_features:
+            - sqrt
+            - 0.5
+            recency_half_life_years:
+            - 
+            - 3
+          logreg:
+            C:
+            - 0.0003
+            - 0.001
+            - 0.003
+            - 0.01
+            class_weight:
+            - 
+            - balanced
+            recency_half_life_years:
+            - 
+            - 3
+        seed: 42
+    outs:
+    - path: reports/best_params.json
+      hash: md5
+      md5: 4da6a9c82e1e739069156e5e0db519a2
+      size: 632
+    - path: reports/tuning_lightgbm.csv
+      hash: md5
+      md5: 3c72e0579ac42e4a284dc3bfbf4bfdc5
+      size: 6942
+    - path: reports/tuning_logreg.csv
+      hash: md5
+      md5: 96e929b6a0375110ecee1b852a054bce
+      size: 1061
+    - path: reports/tuning_random_forest.csv
+      hash: md5
+      md5: b70079f46036e81c92c8b8f316924992
+      size: 996
+  train:
+    cmd: python -m steam_success.models.train
+    deps:
+    - path: data/interim/initial.csv
+      hash: md5
+      md5: a175f4df8481971027932cdef6880559
+      size: 2702571
+    - path: reports/best_params.json
+      hash: md5
+      md5: 4da6a9c82e1e739069156e5e0db519a2
+      size: 632
+    - path: reports/experiments.csv
+      hash: md5
+      md5: ff1625c2611b957b6a51f0bd4a8146f4
+      size: 2271
+    - path: reports/tuning_lightgbm.csv
+      hash: md5
+      md5: 3c72e0579ac42e4a284dc3bfbf4bfdc5
+      size: 6942
+    - path: reports/tuning_logreg.csv
+      hash: md5
+      md5: 96e929b6a0375110ecee1b852a054bce
+      size: 1061
+    - path: reports/tuning_random_forest.csv
+      hash: md5
+      md5: b70079f46036e81c92c8b8f316924992
+      size: 996
+    - path: src/steam_success/features
+      hash: md5
+      md5: 9a97e2e87e4ae69935c7accc6a115029.dir
+      size: 14761
+      nfiles: 3
+    - path: src/steam_success/models
+      hash: md5
+      md5: 88b662539a67c73a508c12d326155ee2.dir
+      size: 33906
+      nfiles: 7
+    params:
+      configs/params.yaml:
+        cv:
+          n_folds: 5
+          fold_months: 6
+          gap_months: 12
+          last_fold_end: '2017-04-30'
+          top_k: 20
+          selection_tolerance: 0.005
+        features:
+          min_count: 50
+          history_gap_months: 12
+          ach_cap: 100
+          drop_categories:
+          - Steam Trading Cards
+          online_categories:
+          - Multi-player
+          - Co-op
+          - Online Co-op
+        seed: 42
+        target:
+          threshold: 50000
+          maturation_months: 12
+    outs:
+    - path: models/model_v1.joblib
+      hash: md5
+      md5: 222f42cc21b021905a0d68bf5cc4bdf3
+      size: 202595
+    - path: models/model_v1.json
+      hash: md5
+      md5: ede569a86fd806fd4482ecdbe7159ef6
+      size: 2016
+    - path: reports/figures/models_comparison.png
+      hash: md5
+      md5: 4c8ffa5ac473378bd719f73370bdab9b
+      size: 153177
+    - path: reports/figures/shap_importance.png
+      hash: md5
+      md5: 9221593ed78e82f3bfcd2ccfc26959eb
+      size: 102964
+    - path: reports/shap_importance.csv
+      hash: md5
+      md5: e415236fc54243b4649a1aa8025c7baa
+      size: 1345
+    - path: reports/summary.csv
+      hash: md5
+      md5: 2cfb3f469f29e0dbb4c18c73192c4d28
+      size: 2950

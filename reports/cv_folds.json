@@ -1,0 +1,47 @@
+[
+ {
+  "fold": 1,
+  "train_end": "2013-10-31",
+  "val_start": "2014-11-01",
+  "val_end": "2015-04-30",
+  "n_train": 1608,
+  "n_val": 920,
+  "val_success_share": 0.3391304347826087
+ },
+ {
+  "fold": 2,
+  "train_end": "2014-04-30",
+  "val_start": "2015-05-01",
+  "val_end": "2015-10-31",
+  "n_train": 2109,
+  "n_val": 1335,
+  "val_success_share": 0.26217228464419473
+ },
+ {
+  "fold": 3,
+  "train_end": "2014-10-31",
+  "val_start": "2015-11-01",
+  "val_end": "2016-04-30",
+  "n_train": 2916,
+  "n_val": 1405,
+  "val_success_share": 0.2612099644128114
+ },
+ {
+  "fold": 4,
+  "train_end": "2015-04-30",
+  "val_start": "2016-05-01",
+  "val_end": "2016-10-31",
+  "n_train": 3836,
+  "n_val": 2061,
+  "val_success_share": 0.22319262493934983
+ },
+ {
+  "fold": 5,
+  "train_end": "2015-10-31",
+  "val_start": "2016-11-01",
+  "val_end": "2017-04-30",
+  "n_train": 5171,
+  "n_val": 2305,
+  "val_success_share": 0.17310195227765726
+ }
+]
